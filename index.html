@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>System Status</title>
+  <style>
+    /* Reset & base styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    }
+
+    body {
+      background: #f5f7fa;
+      color: #1a1a1a;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #ffffff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 1.75rem;
+    }
+
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: 600px;
+      margin: 2rem auto;
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 1.5rem 2rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .services {
+      list-style: none;
+    }
+
+    .service {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #e9ecef;
+    }
+
+    .service:last-child {
+      border-bottom: none;
+    }
+
+    .service-name {
+      font-weight: 500;
+      font-size: 1rem;
+    }
+
+    /* Note beneath service */
+    .service-note {
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+      color: #6c757d;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-transform: capitalize;
+    }
+
+    .status-operational {
+      background: #e0fbe5;
+      color: #147b1d;
+    }
+
+    .status-degraded {
+      background: #fff4d4;
+      color: #8a6100;
+    }
+
+    .status-outage {
+      background: #ffe5e5;
+      color: #a40000;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.875rem;
+      color: #6c757d;
+    }
+
+    /* Dark mode preference */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: #0d1117;
+        color: #e6edf3;
+      }
+      header, main {
+        background: #161b22;
+      }
+      .service {
+        border-bottom-color: #30363d;
+      }
+      footer {
+        color: #8b949e;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>System Status</h1>
+  </header>
+
+  <main>
+    <ul class="services" id="services-list">
+      <!-- Services will be injected by JavaScript -->
+    </ul>
+  </main>
+
+  <footer>
+    Last updated: <span id="last-updated"></span>
+  </footer>
+
+  <script>
+    // Define your services here
+    const services = [
+      { name: "Website", status: "operational" },
+      {
+        name: "Editor",
+        status: "degraded",
+        note:
+          'Issues due to Cloudflare incident, see <a href="https://www.cloudflarestatus.com/incidents/3kt3pt6h82gx" target="_blank" rel="noopener noreferrer">details</a>.',
+      },
+    ];
+
+    // Helper to capitalize first letter
+    const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+
+    const list = document.getElementById("services-list");
+    services.forEach((service) => {
+      const li = document.createElement("li");
+      li.className = "service";
+
+      const nameSpan = document.createElement("span");
+      nameSpan.className = "service-name";
+      nameSpan.textContent = service.name;
+
+      const statusSpan = document.createElement("span");
+      statusSpan.className = `status-pill status-${service.status}`;
+      statusSpan.textContent = capitalize(service.status);
+
+      li.appendChild(nameSpan);
+      li.appendChild(statusSpan);
+
+      // Optional note
+      if (service.note) {
+        const noteDiv = document.createElement("div");
+        noteDiv.className = "service-note";
+        noteDiv.innerHTML = service.note;
+        li.appendChild(noteDiv);
+      }
+
+      list.appendChild(li);
+    });
+
+    // Update footer with current timestamp
+    const footerTime = document.getElementById("last-updated");
+    const now = new Date();
+    footerTime.textContent = now.toLocaleString();
+  </script>
+</body>
+</html>
