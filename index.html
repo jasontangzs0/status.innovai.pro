@@ -121,17 +121,41 @@
         color: #8b949e;
       }
     }
+
+    /* Past incidents section */
+    h2 {
+      margin-top: 2rem;
+      font-size: 1.25rem;
+    }
+
+    .incidents {
+      list-style: none;
+      margin-top: 1rem;
+    }
+
+    .incident {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #e9ecef;
+      font-size: 0.9rem;
+    }
+
+    .incident:last-child {
+      border-bottom: none;
+    }
   </style>
 </head>
 <body>
   <header>
-    <h1>System Status</h1>
+    <h1>GRAIL Status</h1>
   </header>
 
   <main>
     <ul class="services" id="services-list">
       <!-- Services will be injected by JavaScript -->
     </ul>
+
+    <h2>Past Incidents</h2>
+    <ul class="incidents" id="incidents-list"></ul>
   </main>
 
   <footer>
@@ -142,11 +166,15 @@
     // Define your services here
     const services = [
       { name: "Website", status: "operational" },
+      { name: "Editor", status: "operational" },
+    ];
+
+    // Past incidents
+    const incidents = [
       {
-        name: "Editor",
-        status: "degraded",
-        note:
-          'Issues due to Cloudflare incident, see <a href="https://www.cloudflarestatus.com/incidents/3kt3pt6h82gx" target="_blank" rel="noopener noreferrer">details</a>.',
+        date: "2025-07-03",
+        description:
+          'Editor degraded due to Cloudflare issue (<a href="https://www.cloudflarestatus.com/incidents/3kt3pt6h82gx" target="_blank" rel="noopener noreferrer">details</a>)',
       },
     ];
 
@@ -178,6 +206,15 @@
       }
 
       list.appendChild(li);
+    });
+
+    // Render incidents
+    const incidentsList = document.getElementById("incidents-list");
+    incidents.forEach((incident) => {
+      const li = document.createElement("li");
+      li.className = "incident";
+      li.innerHTML = `<strong>${incident.date}</strong>: ${incident.description}`;
+      incidentsList.appendChild(li);
     });
 
     // Update footer with current timestamp
